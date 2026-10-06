@@ -7,11 +7,12 @@ output: github_document
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(readxl)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##Problem 1
+## Problem 1
 ```{r import-transit}
 nyc_transit <- read_csv("data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
 ```
@@ -148,6 +149,76 @@ nyc_routes <- nyc_routes |>
 glimpse(nyc_routes)
 ```
 
+## Problem 2
 
+```{r}
+excel_sheets("data/202509 Trash Wheel Collection Data.xlsx")
+```
+
+```{r}
+mr_trash_wheel <- read_excel(
+  "data/202509 Trash Wheel Collection Data.xlsx",
+  sheet = "Mr. Trash Wheel"
+)
+```
+
+```{r}
+glimpse(mr_trash_wheel)
+```
+
+```{r}
+mr_trash_wheel <- mr_trash_wheel |>
+  select(1:14)
+```
+
+```{r}
+glimpse(mr_trash_wheel)
+```
+```{r}
+mr_trash_wheel <- mr_trash_wheel |>
+  rename(
+    dumpster = Dumpster,
+    month = Month,
+    year = Year,
+    date = Date,
+    weight_tons = `Weight (tons)`,
+    volume_cubic_yards = `Volume (cubic yards)`,
+    plastic_bottles = `Plastic Bottles`,
+    polystyrene = Polystyrene,
+    cigarette_butts = `Cigarette Butts`,
+    glass_bottles = `Glass Bottles`,
+    plastic_bags = `Plastic Bags`,
+    wrappers = Wrappers,
+    sports_balls = `Sports Balls`,
+    homes_powered = `Homes Powered*`
+  )
+```
+
+```{r}
+glimpse(mr_trash_wheel)
+```
+```{r}
+sum(is.na(mr_trash_wheel$dumpster))
+```
+
+```{r}
+mr_trash_wheel <- mr_trash_wheel |>
+  filter(!is.na(dumpster))
+```
+
+```{r}
+dim(mr_trash_wheel)
+```
+
+```{r}
+mr_trash_wheel <- mr_trash_wheel |>
+  mutate(
+    sports_balls = as.integer(round(sports_balls))
+  )
+```
+
+```{r}
+glimpse(mr_trash_wheel)
+```
 
 
