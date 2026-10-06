@@ -6,6 +6,137 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
+library(tidyverse)
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+##Problem 1
+```{r import-transit}
+nyc_transit <- read_csv("data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+```
+
+```{r}
+glimpse(nyc_transit)
+```
+
+```{r clean-transit}
+nyc_transit <- nyc_transit |>
+  select(
+    Line,
+    `Station Name`,
+    `Station Latitude`,
+    `Station Longitude`,
+    starts_with("Route"),
+    Entry,
+    Vending,
+    `Entrance Type`,
+    ADA
+  )
+```
+
+```{r}
+glimpse(nyc_transit)
+```
+
+```{r clean-entry}
+nyc_transit <- nyc_transit |>
+  mutate(
+    Entry = Entry == "YES"
+  )
+```
+
+```{r}
+glimpse(nyc_transit)
+```
+
+The NYC Transit dataset contains information on subway station entrances and exits, including the subway line, station name and location, routes served, entrance type, entry access, vending availability, and ADA accessibility. The original dataset contained 1,868 observations and 32 variables. I retained the variables relevant to the questions of interest and converted the Entry variable from a character variable indicating “YES” or “NO” to a logical variable. The resulting dataset contains 1,868 observations and 19 variables. Each observation represents a station entrance or exit, with station-level information repeated across entrances and exits. The data are not fully tidy because routes served by a station are stored across multiple variables (Route1 through Route11) rather than in a single route variable, so the route information will need to be reformatted for further analysis. 
+
+```{r}
+nyc_transit |>
+  distinct(Line, `Station Name`) |>
+  nrow()
+```
+
+```{r}
+nyc_transit |>
+  filter(ADA == TRUE) |>
+  distinct(Line, `Station Name`) |>
+  nrow()
+```
+
+```{r}
+table(nyc_transit$Vending)
+```
+
+```{r}
+nyc_transit |>
+  filter(Vending == "NO") |>
+  summarise(
+    proportion = mean(Entry)
+  )
+```
+
+```{r}
+nyc_routes <- nyc_transit |>
+  pivot_longer(
+    cols = Route1:Route7,
+    names_to = "route_number",
+    values_to = "route_name"
+  )
+```
+
+```{r}
+glimpse(nyc_routes)
+```
+
+```{r}
+nyc_routes <- nyc_transit |>
+  pivot_longer(
+    cols = Route1:Route7,
+    names_to = "route_number",
+    values_to = "route_name"
+  ) |>
+  mutate(
+    route_number = parse_number(route_number)
+  )
+```
+
+```{r}
+glimpse(nyc_routes)
+```
+
+```{r}
+nyc_routes <- nyc_routes |>
+  filter(!is.na(route_name))
+```
+
+```{r}
+glimpse(nyc_routes)
+```
+
+```{r}
+nyc_routes |>
+  filter(route_name == "A") |>
+  distinct(Line, `Station Name`) |>
+  nrow()
+```
+
+```{r}
+nyc_routes |>
+  filter(route_name == "A", ADA == TRUE) |>
+  distinct(Line, `Station Name`) |>
+  nrow()
+```
+
+```{r}
+nyc_routes <- nyc_routes |>
+  select(-Route8, -Route9, -Route10, -Route11)
+```
+
+```{r}
+glimpse(nyc_routes)
+```
+
+
 
