@@ -58,12 +58,16 @@ nyc_transit |>
   nrow()
 ```
 
+There are 465 distinct subway stations in the dataset, where a station is defined by the combination of subway line and station name.
+
 ```{r}
 nyc_transit |>
   filter(ADA == TRUE) |>
   distinct(Line, `Station Name`) |>
   nrow()
 ```
+
+There are 84 distinct ADA-compliant subway stations in the dataset.
 
 ```{r}
 table(nyc_transit$Vending)
@@ -76,6 +80,8 @@ nyc_transit |>
     proportion = mean(Entry)
   )
 ```
+
+Among station entrances and exits without vending machines, 37.7% allow entry.
 
 ```{r}
 nyc_routes <- nyc_transit |>
@@ -122,12 +128,16 @@ nyc_routes |>
   nrow()
 ```
 
+There are 60 distinct subway stations that serve the A train.
+
 ```{r}
 nyc_routes |>
   filter(route_name == "A", ADA == TRUE) |>
   distinct(Line, `Station Name`) |>
   nrow()
 ```
+
+Of the 60 stations serving the A train, 17 are ADA compliant.
 
 ```{r}
 nyc_routes <- nyc_routes |>
@@ -137,6 +147,7 @@ nyc_routes <- nyc_routes |>
 ```{r}
 glimpse(nyc_routes)
 ```
+
 
 
 
