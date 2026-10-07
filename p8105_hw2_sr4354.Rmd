@@ -372,5 +372,28 @@ trash_wheels <- bind_rows(
 ```{r}
 glimpse(trash_wheels)
 ```
+```{r}
+glimpse(trash_wheels)
+```
 
+The resulting dataset contains `r nrow(trash_wheels)` observations and 15 variables, with each observation representing a dumpster collection by one of the three trash wheels. The variable trash_wheel identifies whether the data observation came from Mr. Trash Wheel, Professor Trash Wheel, or Gwynnda the Good Wheel. Other variables include the date and year of collection, weight and volume of trash collected, counts of different types of debris such as plastic bottles, polystyrene, cigarette butts, plastic bags, and wrappers, and the estimated number of homes powered by the collected waste. 
+
+```{r}
+sum(
+  professor_trash_wheel$weight_tons,
+  na.rm = TRUE
+)
+```
+
+```{r}
+sum(
+  gwynnda_trash_wheel$cigarette_butts[
+    gwynnda_trash_wheel$month == "June" &
+    gwynnda_trash_wheel$year == 2022
+  ],
+  na.rm = TRUE
+)
+```
+
+The total weight of trash collected by Professor Trash Wheel was `r sum(professor_trash_wheel$weight_tons, na.rm = TRUE)` tons. Gwynnda the Good Wheel of the West collected a total of `r format(sum(gwynnda_trash_wheel$cigarette_butts[gwynnda_trash_wheel$month == "June" & gwynnda_trash_wheel$year == 2022], na.rm = TRUE), big.mark = ",")` cigarette butts in June 2022.
 
