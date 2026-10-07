@@ -152,12 +152,12 @@ glimpse(nyc_routes)
 ## Problem 2
 
 ```{r}
-excel_sheets("data/202509 Trash Wheel Collection Data.xlsx")
+excel_sheets("data/202610 Trash Wheel Collection Data.xlsx")
 ```
 
 ```{r}
 mr_trash_wheel <- read_excel(
-  "data/202509 Trash Wheel Collection Data.xlsx",
+  "data/202610 Trash Wheel Collection Data.xlsx",
   sheet = "Mr. Trash Wheel"
 )
 ```
@@ -202,6 +202,11 @@ sum(is.na(mr_trash_wheel$dumpster))
 ```
 
 ```{r}
+glimpse(mr_trash_wheel)
+```
+
+
+```{r}
 mr_trash_wheel <- mr_trash_wheel |>
   filter(!is.na(dumpster))
 ```
@@ -220,5 +225,140 @@ mr_trash_wheel <- mr_trash_wheel |>
 ```{r}
 glimpse(mr_trash_wheel)
 ```
+```{r}
+professor_trash_wheel <- read_excel(
+  "data/202610 Trash Wheel Collection Data.xlsx",
+  sheet = "Professor Trash Wheel"
+)
+```
+
+```{r}
+glimpse(professor_trash_wheel)
+```
+
+```{r}
+professor_trash_wheel <- professor_trash_wheel |>
+  rename(
+    dumpster = Dumpster,
+    month = Month,
+    year = Year,
+    date = Date,
+    weight_tons = `Weight (tons)`,
+    volume_cubic_yards = `Volume (cubic yards)`,
+    plastic_bottles = `Plastic Bottles`,
+    polystyrene = Polystyrene,
+    cigarette_butts = `Cigarette Butts`,
+    glass_bottles = `Glass Bottles`,
+    plastic_bags = `Plastic Bags`,
+    wrappers = Wrappers,
+    homes_powered = `Homes Powered*`
+  )
+```
+
+```{r}
+glimpse(professor_trash_wheel)
+```
+```{r}
+professor_trash_wheel <- professor_trash_wheel |>
+  mutate(
+    plastic_bottles = as.numeric(plastic_bottles)
+  )
+```
+
+
+```{r}
+professor_trash_wheel <- professor_trash_wheel |>
+  filter(!is.na(dumpster))
+```
+
+```{r}
+professor_trash_wheel <- professor_trash_wheel |>
+  mutate(
+    trash_wheel = "Professor"
+  )
+```
+
+```{r}
+glimpse(professor_trash_wheel)
+```
+
+```{r}
+mr_trash_wheel <- mr_trash_wheel |>
+  mutate(
+    trash_wheel = "Mr"
+  )
+```
+
+```{r}
+gwynnda_trash_wheel <- read_excel(
+  "data/202610 Trash Wheel Collection Data.xlsx",
+  sheet = "Gwynnda the Good Wheel of the W"
+)
+```
+
+```{r}
+glimpse(gwynnda_trash_wheel)
+```
+
+```{r}
+gwynnda_trash_wheel <- gwynnda_trash_wheel |>
+  rename(
+    dumpster = Dumpster,
+    month = Month,
+    year = Year,
+    date = Date,
+    weight_tons = `Weight (tons)`,
+    volume_cubic_yards = `Volume (cubic yards)`,
+    plastic_bottles = `Plastic Bottles`,
+    polystyrene = Polystyrene,
+    cigarette_butts = `Cigarette Butts`,
+    plastic_bags = `Plastic Bags`,
+    wrappers = Wrappers,
+    homes_powered = `Homes Powered*`
+  )
+```
+
+```{r}
+glimpse(gwynnda_trash_wheel)
+```
+```{r}
+sum(is.na(gwynnda_trash_wheel$dumpster))
+```
+
+```{r}
+gwynnda_trash_wheel <- gwynnda_trash_wheel |>
+  filter(!is.na(dumpster))
+```
+
+```{r}
+gwynnda_trash_wheel <- gwynnda_trash_wheel |>
+  mutate(
+    trash_wheel = "Gwynnda"
+  )
+```
+
+```{r}
+glimpse(gwynnda_trash_wheel)
+```
+
+```{r}
+mr_trash_wheel <- mr_trash_wheel |>
+  mutate(
+    year = as.numeric(year)
+  )
+```
+
+```{r}
+trash_wheels <- bind_rows(
+  mr_trash_wheel,
+  professor_trash_wheel,
+  gwynnda_trash_wheel
+)
+```
+
+```{r}
+glimpse(trash_wheels)
+```
+
 
 
