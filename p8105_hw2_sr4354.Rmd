@@ -397,3 +397,125 @@ sum(
 
 The total weight of trash collected by Professor Trash Wheel was `r sum(professor_trash_wheel$weight_tons, na.rm = TRUE)` tons. Gwynnda the Good Wheel of the West collected a total of `r format(sum(gwynnda_trash_wheel$cigarette_butts[gwynnda_trash_wheel$month == "June" & gwynnda_trash_wheel$year == 2022], na.rm = TRUE), big.mark = ",")` cigarette butts in June 2022.
 
+
+## Problem 3
+
+```{r}
+mci_baseline <- read_csv( "data/data_mci/MCI_baseline.csv", skip = 1 )
+```
+```{r}
+glimpse(mci_baseline)
+```
+
+```{r}
+mci_amyloid <- read_csv(
+  "data/data_mci/mci_amyloid.csv",
+  skip = 1
+)
+```
+
+```{r}
+glimpse(mci_amyloid)
+```
+
+```{r}
+mci_amyloid <- mci_amyloid |>
+  pivot_longer(
+    cols = Baseline:`Time 8`,
+    names_to = "time",
+    values_to = "amyloid"
+  )
+```
+
+```{r}
+glimpse(mci_amyloid)
+```
+```{r}
+mci_amyloid <- mci_amyloid |>
+  mutate(
+    amyloid = as.numeric(amyloid)
+  )
+```
+
+```{r}
+glimpse(mci_amyloid)
+```
+
+
+
+
+```{r}
+mci_baseline <- mci_baseline |>
+  filter(ID != 234)
+```
+
+
+
+```{r}
+nrow(mci_baseline)
+```
+
+
+```{r}
+mci_baseline <- mci_baseline |>
+  mutate(
+    Sex = factor(
+      Sex,
+      levels = c(0, 1),
+      labels = c("Female", "Male")
+    ),
+    apoe4 = factor(
+      apoe4,
+      levels = c(0, 1),
+      labels = c("Non-carrier", "Carrier")
+    )
+  )
+```
+
+```{r}
+glimpse(mci_baseline)
+```
+```{r}
+nrow(mci_baseline)
+```
+
+```{r}
+sum(mci_baseline$`Age at onset` != ".")
+```
+
+```{r}
+mean(mci_baseline$`Current Age`)
+```
+
+```{r}
+mean(mci_baseline$apoe4[mci_baseline$Sex == "Female"] == "Carrier")
+```
+
+```{r}
+setdiff(mci_baseline$ID, unique(mci_amyloid$`Study ID`))
+```
+
+```{r}
+setdiff(unique(mci_amyloid$`Study ID`), mci_baseline$ID)
+```
+
+```{r}
+mci_combined <- inner_join(
+  mci_baseline,
+  mci_amyloid,
+  by = c("ID" = "Study ID")
+)
+```
+
+```{r}
+glimpse(mci_combined)
+```
+
+```{r}
+write_csv(
+  mci_combined,
+  "data/mci_combined.csv"
+)
+```
+
+
