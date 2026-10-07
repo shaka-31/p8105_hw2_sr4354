@@ -349,6 +349,19 @@ mr_trash_wheel <- mr_trash_wheel |>
 ```
 
 ```{r}
+mr_trash_wheel <- mr_trash_wheel |>
+  mutate(
+    trash_wheel = "Mr"
+  )
+
+professor_trash_wheel <- professor_trash_wheel |>
+  mutate(
+    trash_wheel = "Professor"
+  )
+```
+
+
+```{r}
 trash_wheels <- bind_rows(
   mr_trash_wheel,
   professor_trash_wheel,
@@ -359,6 +372,5 @@ trash_wheels <- bind_rows(
 ```{r}
 glimpse(trash_wheels)
 ```
-
 
 
