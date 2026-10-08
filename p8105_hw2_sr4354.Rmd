@@ -518,4 +518,6 @@ write_csv(
 )
 ```
 
-
+The baseline dataset was imported with skip = 1 because the first row contained variable descriptions. After excluding the participant with MCI at baseline, 482 participants remained, 96 of whom developed MCI during follow-up. Mean baseline age was 65.04 years, and 29.86% of women were APOE4 carriers.
+The amyloid dataset was also imported with skip = 1. The five amyloid measurement columns were reorganized so that each participant had one row for each measurement timepoint, and amyloid values were converted to numeric.
+Eight participants appeared only in the baseline dataset, while 13 appeared only in the amyloid dataset. Using inner join retained participants present in both datasets, resulting in 2,370 observations from 474 participants. The combined dataset was exported as mci_combined.csv.
